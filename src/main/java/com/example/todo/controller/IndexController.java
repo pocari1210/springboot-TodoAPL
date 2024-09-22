@@ -2,7 +2,7 @@ package com.example.todo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 
 @Controller("/")
 public class IndexController {
@@ -11,9 +11,13 @@ public class IndexController {
     // GET / -> "Hello, world!"
     @GetMapping
 
-    // indexメソッドの返り値が、@ResponseBodyにはいる
-    @ResponseBody
+      // indexメソッドの返り値が、@ResponseBodyにはいる
+      //@ResponseBody
+      //public String index() {
+      //  return "Hello, world!";
+      //}
+
     public String index() {
-        return "Hello, world!";
+        return "index";
     }
 }
