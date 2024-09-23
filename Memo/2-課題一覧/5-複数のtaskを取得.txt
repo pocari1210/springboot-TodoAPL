@@ -1,0 +1,56 @@
+
+5-複数のtaskを取得
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public String list(Model model) {
+        var task1 = new TaskDTO(
+                1L,
+                "Spring Boot を学ぶ",
+                "TODO アプリケーションを作ってみる",
+                "TODO"
+        );
+        var task2 = new TaskDTO(
+                2L,
+                "Spring Security を学ぶ",
+                "ログイン機能を作ってみる",
+                "TODO"
+        );
+
+        // List.ofで複数の変数を1つのインスタンスにし、
+        // taskListでうけとっている
+        var taskList = List.of(task1, task2);
+
+        model.addAttribute("taskList", taskList);
+        return "tasks/list";
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+        <tbody>
+        <tr>
+            <td th:text="${taskList[0].id}"></td>
+            <td th:text="${taskList[0].summary}"></td>
+            <td th:text="${taskList[0].status}"></td>
+        </tr>
+        <tr>
+            <td th:text="${taskList[1].id}"></td>
+            <td th:text="${taskList[1].summary}"></td>
+            <td th:text="${taskList[1].status}"></td>
+        </tr>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+データが二つ表示されるの確認
