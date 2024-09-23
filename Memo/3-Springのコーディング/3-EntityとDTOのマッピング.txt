@@ -1,0 +1,64 @@
+
+3-EntityとDTOのマッピング
+
+EntityからDTOへの変換コードを記述
+
+◆DTOの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskDTO.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import com.example.todo.controller.task.TaskDTO;
+
+    public static TaskDTO toDTO(TaskEntity entity) {
+        return new TaskDTO(
+                entity.id(),
+                entity.summary(),
+                entity.description(),
+                entity.status().name()
+        );
+    }
+
+★コード解説★
+public static TaskDTO
+⇒戻り値はTaskDTOとする。
+
+中身はEntityからDTOを生成するコードを記述している
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public String list(Model model) {
+
+        var taskList = taskService.find()
+                // リストの中身を変換
+                .stream()
+                .map(TaskDTO::toDTO)
+                .toList();
+
+        model.addAttribute("taskList", taskList);
+
+★コード解説★
+
+.stream()
+⇒リストの中身を変換
+
+.map(TaskDTO::toDTO)
+⇒streamでmapメソッドを使用
+
+⇒TaskDTOからtoDTOをメソッド参照している
+
+.toList()
+⇒List型に変換
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+エラーがなく、画面に表示されたことを確認出来たらOK
