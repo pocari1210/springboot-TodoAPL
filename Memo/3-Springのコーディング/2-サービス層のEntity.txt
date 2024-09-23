@@ -1,0 +1,122 @@
+
+2-サービス層のEntity
+
+Entity;DTOを扱うデータの入れ物をイメージする
+
+ドメイン層の中のコードがプレゼンテーション層のコードに
+依存するのは避けたほうがよいので、
+Service配下にクラスを作成する
+
+serviceはEntityをコントローラーに返すようになるので、
+EntityからDTOに変換するコードを記述する
+
+◆Entityの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskEntity.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.service.task;
+
+public record TaskEntity(
+        long id,
+        String summary,
+        String description,
+        TaskStatus status
+) {
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Statusの編集(遷移元)◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskStatus.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.service.task;
+
+public enum TaskStatus {
+
+    TODO,
+    DOING,
+    DONE
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Serviceの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.service.task;
+
+import java.util.List;
+
+public class TaskService {
+
+    public List<TaskEntity> find() {
+        var task1 = new TaskEntity(
+                1L,
+                "Spring Boot を学ぶ",
+                "TODO アプリケーションを作ってみる",
+                TaskStatus.TODO
+        );
+        var task2 = new TaskEntity(
+                2L,
+                "Spring Security を学ぶ",
+                "ログイン機能を作ってみる",
+                TaskStatus.DOING
+        );
+
+        return List.of(task1, task2);
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.service.task;
+
+import java.util.List;
+
+public class TaskService {
+
+    public List<TaskEntity> find() {
+        var task1 = new TaskEntity(
+                1L,
+                "Spring Boot を学ぶ",
+                "TODO アプリケーションを作ってみる",
+                TaskStatus.TODO
+        );
+        var task2 = new TaskEntity(
+                2L,
+                "Spring Security を学ぶ",
+                "ログイン機能を作ってみる",
+                TaskStatus.DOING
+        );
+
+        return List.of(task1, task2);
+    }
+}
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
