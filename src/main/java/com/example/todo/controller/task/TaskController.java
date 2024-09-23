@@ -1,4 +1,4 @@
-package com.example.todo.controller.todo;
+package com.example.todo.controller.task;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +12,13 @@ public class TaskController {
     // メソッドとGETの処理を行うURLを紐づける役割を担う
     @GetMapping("/tasks")
     public String list(Model model) {
-        model.addAttribute("task", "Spring Bootを学ぶ");
+        var task = new TaskDTO(
+                1L,
+                "Spring Boot を学ぶ",
+                "TODO アプリケーションを作ってみる",
+                "TODO"
+        );
+        model.addAttribute("task", task);
         return "tasks/list";
     }
 }

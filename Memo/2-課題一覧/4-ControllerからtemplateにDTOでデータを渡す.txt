@@ -1,0 +1,93 @@
+
+4-ControllerからtemplateにDTOでデータを渡す
+
+DTOというオブジェクトにデータをまとめて、
+テンプレートに疎通させる
+
+DTOはデータトランスファーオブジェクトの略
+
+◆DTOの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskDTO.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.controller.task;
+
+public record TaskDTO(
+        long id,
+        String summary,
+        String description,
+        String status
+) {
+}
+
+★コード解説★
+record型の記述方法
+クラス名の後に()で初めて、フィールドを並べていく
+
+このファイルでkeyを生成している
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public String list(Model model) {
+        var task = new TaskDTO(
+                1L,
+                "Spring Boot を学ぶ",
+                "TODO アプリケーションを作ってみる",
+                "TODO"
+        );
+        model.addAttribute("task", task);
+        return "tasks/list";
+    }
+
+★コード解説★
+addAttributeでインスタンスで生成された第二引数のtaskを
+第一引数の"task"で受け取っている
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<h1>タスク一覧</h1>
+<a th:href="@{/}">トップページに戻る</a>
+
+↓↓追加↓↓
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>概要</th>
+            <th>ステータス</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.summary}"></td>
+            <td th:text="${task.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+★コード解説★
+controller/task/TaskController.javaのaddAttributeで記述した
+第二引数のtaskの情報を表示させている
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
