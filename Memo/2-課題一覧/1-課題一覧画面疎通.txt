@@ -1,0 +1,60 @@
+
+1-課題一覧画面疎通
+
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/todo/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.controller.todo;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+// コントローラーとして認識させる
+@Controller
+public class TaskController {
+
+    // データを取得する
+    // メソッドとGETの処理を行うURLを紐づける役割を担う
+    @GetMapping("/tasks")
+    public String list() {
+        return "tasks/list";
+    }
+}
+
+@GetMapping("/tasks")
+⇒http://localhost:8080/tasksと入力したら、
+　ページが遷移される
+
+return "tasks/list";
+⇒templates配下のtasks/list.htmlをrerurnで返し、
+　ブラウザに表示をさせる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆ビューの編集(遷移元)◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク一覧</title>
+</head>
+<body>
+<h1>タスク一覧</h1>
+</body>
+</html>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+http://localhost:8080/tasksでページが表示されたらOK
