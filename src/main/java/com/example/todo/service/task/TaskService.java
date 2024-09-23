@@ -1,7 +1,10 @@
 package com.example.todo.service.task;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class TaskService {
 
     public List<TaskEntity> find() {
@@ -18,6 +21,7 @@ public class TaskService {
                 TaskStatus.DOING
         );
 
+        // 引数に与えられた配列や要素の不変のListを返す
         return List.of(task1, task2);
     }
 }

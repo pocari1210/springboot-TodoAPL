@@ -9,7 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class TaskController {
 
-    private final TaskService taskService = new TaskService();
+    //private final TaskService taskService = new TaskService();
+
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     // データを取得する
     // メソッドとGETの処理を行うURLを紐づける役割を担う
@@ -17,8 +23,14 @@ public class TaskController {
     public String list(Model model) {
 
         var taskList = taskService.find()
+
+                // リストの中身を変換
                 .stream()
+
+                // TaskDTOからtoDTOメソッド参照している
                 .map(TaskDTO::toDTO)
+
+                // List型に変換
                 .toList();
 
         model.addAttribute("taskList", taskList);

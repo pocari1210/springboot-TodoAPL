@@ -1,0 +1,18 @@
+
+Bean
+
+DI経由で渡すオブジェクトのことを指す
+
+DIを実現するためには、
+Bean登録(Serviseクラスへの@service記述)と
+Bean取得(Controllerでserviseのコンストラクタの生成)
+が必要。
+
+どちらかがない場合は、コンパイルエラーになる
+
+Bean登録の漏れのエラー例
+Parameter 0 of constructor in com.example.todo.controller.task.TaskController required a bean of type 
+'com.example.todo.service.task.TaskService' that could not be found.
+
+Action:
+Consider defining a bean of type 'com.example.todo.service.task.TaskService' in your configuration.

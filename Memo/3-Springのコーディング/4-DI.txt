@@ -1,0 +1,54 @@
+
+4-DI
+
+◆Serviceの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.stereotype.Service;
+
+// TaskServiceをspringに登録させる
+@Service
+
+public class TaskService {
+
+★コード解説★
+DIを使用するにためには、Serviceがspringに登録をされていることが
+大前提。
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    // DI経由でインスタンスを設定したいフィールドは
+    // finalにする
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+★コード解説★
+DIによってインスタンスを生成するには、
+publicのコンストラクターを準備する
+
+TaskControllerメソッドのtaskServiceを引数にとり、
+TaskControllerのtaskServiceにインスタンスを設定する
+
+個の記述で、springに登録されているservice(TaskService)の
+インスタンスをspringから受け取ることができる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+コードのリファクタリングなので、エラーが出ず、
+画面に疎通できていたらOK
