@@ -1,0 +1,32 @@
+
+6-複数のtaskをloopで取得
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+        <tbody>
+        <tr th:each="task : ${taskList}">
+            <td th:text="${task.id}"></td>
+            <td th:text="${task.summary}"></td>
+            <td th:text="${task.status}"></td>
+        </tr>
+        </tbody>
+
+★コード解説★
+thymeleafのth:eachでtaskListを全件表示させている
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
