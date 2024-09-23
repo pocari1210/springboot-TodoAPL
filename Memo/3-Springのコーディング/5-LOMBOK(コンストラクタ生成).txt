@@ -1,0 +1,51 @@
+
+◆build.gradleの編集◆
+
+ディレクトリ
+build.gradle
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+★コード解説★
+compileOnlyの時にアノテーションプロセッサーで拡張する
+compileOnlyの処理を拡張するという内容
+
+        ↓↓コメントアウト解除↓↓
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+
+private final TaskService taskService;
+
+      ↓↓コンストラクタをコメントアウト↓↓
+//    public TaskController(TaskService taskService) {
+//        this.taskService = taskService;
+//    }
+
+★コード解説★
+@RequiredArgsConstructor
+⇒Requiredな引数(final修飾子がついているフィールド)を
+　初期化するコンストラクタという意味
+
+private final TaskService taskService;
+このフィールドがRequiredArgsになっている
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
