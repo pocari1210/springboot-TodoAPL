@@ -1,0 +1,53 @@
+
+◆Serviceの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.service.task;
+
+import com.example.todo.controller.task.TaskDTO;
+
+import java.util.List;
+
+public class TaskService {
+
+    // TaskDTOを返すfindというメソッドを追加
+    public List<TaskDTO> find() {
+        var task1 = new TaskDTO(
+                1L,
+                "Spring Boot を学ぶ",
+                "TODO アプリケーションを作ってみる",
+                "TODO"
+        );
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+public class TaskController {
+
+    // serviceで作成したTaskServiceをインスタンスとして生成
+    private final TaskService taskService = new TaskService();
+
+    @GetMapping("/tasks")
+    public String list(Model model) {
+
+        // TaskServiceクラスのfindメソッド内の
+        // データを取得している
+        model.addAttribute("taskList", taskService.find());
+        return "tasks/list";
+    }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+画面が問題なく表示されたらOK
