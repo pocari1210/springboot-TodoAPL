@@ -1,0 +1,50 @@
+
+2-テーブル作成とデータの挿入
+
+◆schema.sqlの編集◆
+
+H2databaseにテーブルを作成し、カラムの追加、
+data.sqlでコンソールを立ち上げた際にデータが入るようにする
+
+ディレクトリ
+src/main/resources/schema.sql
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+CREATE TABLE tasks
+(
+    id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    summary VARCHAR(256) NOT NULL,
+    description TEXT,
+    status VARCHAR(256) NOT NULL
+);
+
+★コード解説★
+tasksというテーブル名を作成
+
+入力が完了したら、アプリケーションを再起動し、
+H2databaseにテーブル名とカラム名が追加されていることを確認
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆data.sqlの編集◆
+
+h2databaseに登録したテーブルにデータを投入する
+
+ディレクトリ
+src/main/resources/data.sql
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+INSERT INTO tasks (summary, description, status) 
+VALUES ('Spring Boot を学ぶ', 'TODO アプリを作る', 'DONE');
+
+INSERT INTO tasks (summary, description, status) 
+VALUES ('Spring Security を学ぶ', 'ログイン機能を作る', 'TODO');
+
+
+H2databaseにログインし、レコードが登録されていることを確認
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
