@@ -1,0 +1,65 @@
+
+1-H2Databaseとmybatisの設定
+
+h2databaseとmybatisのセットアップを行う
+
+◆build.gradleの編集◆
+
+ディレクトリ
+build.gradle
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+↓↓コメントアウト解除↓↓
+implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+runtimeOnly 'com.h2database:h2'
+testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2'
+
+★コード解説★
+DBにアクセルする際は、mybatisというライブラリを使用する
+
+Gradleの変更を読み込むをクリックし、設定を反映させる
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆application.propertiesファイルのの編集◆
+
+ディレクトリ
+src/main/resources/application.properties
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:todo
+spring.datasource.username=sa
+spring.datasource.password=
+
+★コード解説★
+DBの接続情報を設定している
+
+driver-class
+⇒javaとDBをつなぐときに使うクラスのこと
+
+http://localhost:8080/h2-console/のURLを入力し、
+ログイン画面が表示されることを確認
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆ログインページのパラメーター◆
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+Driver Class:org.h2.Driver
+JDBC URL:jdbc:h2:mem:todo
+User Name:sa
+Password:
+
+入力が完了したら「Connect」ボタンを押して、
+接続を行う
+
+★入力内容説明★
+application.propertiesで設定した値を入力する
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
