@@ -1,0 +1,54 @@
+
+4-データの疎通
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping("/tasks/{id}")
+    public String showDetail(@PathVariable("id") long taskId, Model model) {
+        var taskEntity = taskService.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found: id = " + taskId));
+
+        ↓↓変更↓↓
+        model.addAttribute("task", TaskDTO.toDTO(taskEntity));
+
+★コード解説★
+var taskEntityのデータをすべてhtmlで表示させる
+
+model.addAttribute("task", TaskDTO.toDTO(taskEntity));
+⇒taskEntityをTaskDTOに変換し、Viewに渡す
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク詳細</title>
+</head>
+<body>
+<h1>タスク詳細</h1>
+<a th:href="@{/tasks}">タスク一覧</a>
+<p th:text="${taskId}"></p>
+<div th:object="${task}">
+    <h2 th:text="'#' + *{id} + ' ' + *{summary}"></h2>
+    <p th:text="*{status}"></p>
+    <pre th:text="*{description}"></pre>
+</div>
+</body>
+</html>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+DBに登録されている情報が疎通されたらOK
