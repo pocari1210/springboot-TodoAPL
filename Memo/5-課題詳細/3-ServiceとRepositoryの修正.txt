@@ -1,0 +1,73 @@
+
+◆Serviceの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public Optional<TaskEntity> findById(long taskId) {
+        return taskRepository.selectById(taskId);
+    }
+
+★コード解説★
+
+Optional<TaskEntity>
+戻り値をOptionalとしたのは、指定したIDにタスクが
+存在しない可能性があるため。
+
+存在する場合は、Entityに値を返し、
+ない場合はNullになってしまう場合などは、
+Optionalで返り値を設定すること。
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.apache.ibatis.annotations.Param;
+import java.util.Optional;
+
+    // 1件取得するselect分を作成
+    @Select("SELECT id, summary, description, status FROM tasks WHERE id = #{taskId}")
+    Optional<TaskEntity> selectById(@Param("taskId") long taskId);
+
+★コード解説★
+selectById(@Param("taskId") long taskId);
+⇒WHEREで条件指定したIDを@ParamでtaskIdの変数で受け取る
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+
+    @GetMapping("/tasks/{id}")
+    public String showDetail(@PathVariable("id") long taskId, Model model) {
+        // findByで指定された条件に基づいてエンティティを検索用
+        var taskEntity = taskService.findById(taskId)
+
+                // optionalでNULLだった場合は例外となる
+                .orElseThrow(() -> new IllegalArgumentException("Task not found: id = " + taskId));
+
+        // taskEntityのidを検索した結果DBへの問い合わせの結果が
+        // 成功しているかわかる。
+        model.addAttribute("taskId", taskEntity.id());
+        return "tasks/detail";
+    }
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////

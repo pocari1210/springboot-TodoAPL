@@ -30,7 +30,7 @@ public record TaskEntity(
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-◆Statusの編集)◆
+◆Statusの編集◆
 
 ディレクトリ
 src/main/java/com/example/todo/service/task/TaskStatus.java
@@ -97,7 +97,7 @@ import java.util.List;
 public class TaskService {
 
     public List<TaskEntity> find() {
-        var task1 = new TaskEntity(
+        var task1 = new TaskEntity(.d
                 1L,
                 "Spring Boot を学ぶ",
                 "TODO アプリケーションを作ってみる",
