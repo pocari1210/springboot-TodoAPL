@@ -1,0 +1,38 @@
+
+2-@PathVariableでURL取得
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.web.bind.annotation.PathVariable;
+
+    @GetMapping("/tasks/{id}")
+    public String showDetail(@PathVariable("id") long taskId, Model model) {
+        model.addAttribute("taskId", taskId);
+        return "tasks/detail";
+    }
+
+★コード解説★
+ModelのaddAttributeメソッドで第二引数のtaskIdにlong taskIdを代入し、
+第二引数を第一引数で格納し、htmlで表示させる
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/detail.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<p th:text="${taskId}"></p>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+id情報が疎通できたらOK
