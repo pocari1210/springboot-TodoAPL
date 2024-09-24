@@ -1,0 +1,62 @@
+
+3-DBの登録内容をブラウザに表示
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.repository.task;
+
+import com.example.todo.service.task.TaskEntity;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
+
+// DIにBeanとしてクラスが登録される
+// DBにアクセスを行う
+@Mapper
+
+// @Mapperをつけるときは、classでなく、interfaceにする
+// 必要がある
+public interface TaskRepository {
+
+    @Select("SELECT id, summary, description, status FROM tasks;")
+    
+    // 戻り値をList<TaskEntity>とする
+    List<TaskEntity> select();
+}
+
+★コード解説★
+DBを取得するために、Repositoryというオブジェクトを作成
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Serviceの編集◆
+
+TaskRepositoryをTaskServiceのなかで使用する
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import com.example.todo.repository.task.TaskRepository;
+import lombok.RequiredArgsConstructor;
+
+@Service
+
+// LOMBOKの機能で、コンストラクタ生成
+@RequiredArgsConstructor
+
+    private final TaskRepository taskRepository;
+
+    public List<TaskEntity> find() {
+        return taskRepository.select();
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
