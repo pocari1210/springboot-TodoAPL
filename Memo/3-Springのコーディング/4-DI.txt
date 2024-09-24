@@ -44,7 +44,7 @@ publicのコンストラクターを準備する
 TaskControllerメソッドのtaskServiceを引数にとり、
 TaskControllerのtaskServiceにインスタンスを設定する
 
-個の記述で、springに登録されているservice(TaskService)の
+この記述で、springに登録されているservice(TaskService)の
 インスタンスをspringから受け取ることができる
 
 
