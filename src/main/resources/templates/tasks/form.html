@@ -12,7 +12,7 @@
 <body>
 <section layout:fragment="content">
     <div>
-        <form>
+        <form th:action="@{/tasks}" method="post">
             <div>
                 <label for="summaryInput">概要</label>
                 <input type="text" id="summaryInput">

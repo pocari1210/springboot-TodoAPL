@@ -1,0 +1,47 @@
+
+2-requestを受けるハンドラーメソッド実装
+
+作成ボタンを押した後の処理を行うハンドラーメソッドを
+記述する
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.web.bind.annotation.PostMapping;
+
+    @PostMapping("/tasks")
+    public String create(Model model) {
+        return list(model);
+    }
+
+★コード解説★
+仮実装なので、form.htmlのsubmitの処理が成功したら、
+一覧画面を表示させる。
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/form.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<section layout:fragment="content">
+    <div>
+
+        ↓↓編集↓↓
+        <form th:action="@{/tasks}" method="post">
+
+★コード解説★
+/tasksという箇所にリクエストを送信する
+
+methodをpostにすることで、submitが実行され、
+/tasksに入力したデータが送られる。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
