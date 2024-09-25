@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="ja"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
->
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">TODOアプリ</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-</head>
-<body>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+6-Navbarの設置
+
+◆ベーステンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/layout/layout.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
 <div class="container">
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
@@ -32,5 +29,12 @@
     </nav>
     <section layout:fragment="content"></section>
 </div>
-</body>
-</html>
+
+★コード解説★
+Bootstrapの公式ページのNavbarを元に
+作成している
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+ナビゲーションが各ページに疎通されていることを
+確認する
