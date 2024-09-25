@@ -1,0 +1,89 @@
+
+thymeleafのテンプレートを共通化させる
+
+公式ページの
+Rhymeleaf Layout.Directを参考にする
+
+
+◆gradleの編集◆
+
+ディレクトリ
+build.gradle
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+dependencies {
+	implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.2.1'
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆ベーステンプレートの編集(新規作成)◆
+
+ディレクトリ
+src/main/resources/templates/layout/layout.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TODOアプリ</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<!-- containerを使用して、余白を作っている -->
+<div class="container">
+    <header>This is header.</header>
+
+    <!-- それぞれのページにあわせて、contentを表示させる -->
+    <section layout:fragment="content"></section>
+
+    <footer>This is footer.</footer>
+</div>
+
+</body>
+</html>
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/index.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+
+    <!-- layout/layout.htmlを使用して装飾を行う -->
+      layout:decorate="~{layout/layout}"
+>
+<head>
+    <title>TODOアプリ</title>
+</head>
+<body>
+
+<!-- layout.htmlにcontentの中身を渡す -->
+<section layout:fragment="content">
+    <h1>TODOアプリ</h1>
+    <a th:href="@{/tasks}">タスク一覧</a>
+</section>
+
+</body>
+</html>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
