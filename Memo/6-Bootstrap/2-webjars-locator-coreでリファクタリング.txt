@@ -1,0 +1,46 @@
+
+2-webjars-locator-coreでリファクタリング
+
+webjars-locator-coreを使用して、バージョンの記述を省略する
+バージョンが変わった際も柔軟に対応できることがメリット
+
+◆gradleの編集◆
+
+ディレクトリ
+build.gradle
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+dependencies {
+	implementation group: 'org.webjars', name: 'webjars-locator-core', version: '0.52'
+
+★コード解説★
+
+入力をしたら、Load change gradleのボタンをクリックし
+で依存関係を取得する
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/index.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TODOアプリ</title>
+
+    ↓↓変更↓↓
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+
+<body>
+
+↓↓変更↓↓
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<h1 >TODOアプリ</h1>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
