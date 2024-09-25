@@ -1,0 +1,40 @@
+
+◆gradleの編集◆
+
+ディレクトリ
+build.gradle
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+dependencies {
+	implementation group: 'org.webjars', name: 'bootstrap', version: '5.2.3'
+
+★コード解説★
+webjarを使用してBootstrapを導入している。
+
+入力をしたら、Load change gradleのボタンをクリックし
+で依存関係を取得する
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/index.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TODOアプリ</title>
+
+    // 外部ライブラリの「Gradle: org.webjars:bootstrap:5.2.3」を読み込む
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}">
+</head>
+
+<body>
+<script th:src="@{/webjars/bootstrap/5.2.3/js/bootstrap.min.js}"></script>
+<h1 >TODOアプリ</h1>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
