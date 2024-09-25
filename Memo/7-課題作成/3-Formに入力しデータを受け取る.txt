@@ -1,0 +1,81 @@
+
+3-Formに入力しデータを受け取る
+
+ブラウザから入力したサーバーを送信し、
+サーバー側でデータをうけとれるようにする。
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/form.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<input type="text" id="summaryInput" name="summary">
+<textarea id="descriptionInput" name="description"></textarea>
+<select id="statusInput" name="status">
+
+★コード解説★
+ブラウザからサーバーにデータを送るために
+フォームタグの入力フォームにname属性を追加する
+
+個の記述によりname属性に入力された内容がkeyとして
+サーバーに送信される
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Formの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.controller.task;
+
+public record TaskForm(
+        String summary,
+        String description,
+        String status
+) {
+}
+
+★コード解説★
+フォームの入力要素をまとめたForm classを用意している。
+
+TaskFormの変数は、form.htmlで記載するname属性と
+あわせるようにする
+
+tasks/form.htmlで入力された内容をうけとり、
+task/TaskControllerのTaskForm formにデータを渡す。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @PostMapping("/tasks")
+
+    // ↓↓TaskForm追加↓↓
+    public String create(TaskForm form, Model model) {
+        return list(model);
+    }
+
+★コード解説★
+POSTされたデータをハンドラーメソッドで受け取るために、
+tasks/form.htmlで記述したTaskFormを入れ物として用意する。
+⇒TaskFormのformでデータを受け取る。
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+return list(model);をデバッグ機能で実行し、
+デバッグのログに入力された内容がLogで表示されることを確認
+
+
+
