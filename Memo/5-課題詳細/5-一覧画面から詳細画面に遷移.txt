@@ -1,0 +1,25 @@
+
+5-一覧画面から詳細画面に遷移
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+        <tr th:each="task : ${taskList}" th:object="${task}">
+
+            ↓↓修正↓↓
+            <td><a th:href="@{/tasks/{id}(id=*{id})}" th:text="'#' + *{id}"></a></td>
+            <td><a th:href="@{/tasks/{id}(id=*{id})}" th:text="*{summary}"></a></td>
+            <td th:text="*{status}"></td>
+        </tr>
+
+★コード解説★
+id=*{id}は、th:objectでバインドされているタスクのIDを指し、
+/tasks/{id}に代入される流れになる
+⇒これにより、リンク先が指定される
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
