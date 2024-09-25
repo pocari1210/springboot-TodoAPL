@@ -1,0 +1,72 @@
+
+1-課題作成画面疎通
+
+◆テンプレートの編集(遷移元)◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    <div>
+        <a th:href="@{/tasks/creationForm}" class="btn btn-primary">作成</a>
+    </div>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping("/tasks/creationForm")
+    public String showCreationForm() {
+        return "tasks/form";
+    }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集(遷移先)◆
+
+ディレクトリ
+src/main/resources/templates/tasks/form.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<body>
+<section layout:fragment="content">
+    <div>
+        <form>
+            <div>
+                <label for="summaryInput">概要</label>
+                <input type="text" id="summaryInput">
+            </div>
+            <div>
+                <label for="descriptionInput">詳細</label>
+                <textarea id="descriptionInput"></textarea>
+            </div>
+            <div>
+                <label for="statusInput">ステータス</label>
+                <select id="statusInput">
+                    <option value="TODO">Todo</option>
+                    <option value="DOING">Doing</option>
+                    <option value="DONE">Done</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit">作成</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+一覧ページの作成ボタンを押し、課題作成ページに遷移されることを確認
+
+
