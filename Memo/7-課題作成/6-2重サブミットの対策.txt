@@ -1,0 +1,42 @@
+
+6-2重サブミットの対策
+
+現行の設定では、登録処理を行った後、
+一覧ページに戻り、登録をされているが、
+リロードをするともう1件同じ内容のデータが投稿されてしまうので、
+その不具合を対策する
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @PostMapping("/tasks")
+    public String create(TaskForm form) {
+
+        var newEntity = new TaskEntity(null, form.summary(), form.description(),
+                TaskStatus.valueOf(form.status()));
+
+        taskService.create(newEntity);
+
+        // リダイレクト先のURLへ遷移
+        return "redirect:/tasks";
+    }
+
+★コード解説★
+明示的にredirecで一覧画面に遷移させることで、
+2重サブミットを防ぐことができる。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+デベロッパーツールを開き、headerの項目を押し、
+ステータスが302でlocationが、/tasksとなっていることを確認
+
+リロードして、同じ内容のデータが登録されていなければOK
+
+
+
+
+

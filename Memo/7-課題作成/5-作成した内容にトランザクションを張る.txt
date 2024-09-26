@@ -1,0 +1,33 @@
+
+5-作成した内容にトランザクションを張る
+
+トランザクションを張ることで、ロールバックが
+可能になる。
+
+
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.transaction.annotation.Transactional;
+
+    ↓↓追加↓↓
+    @Transactional
+    public void create(TaskEntity newEntity) {
+        taskRepository.insert(newEntity);
+
+    // throw new IllegalArgumentException("TEST");
+
+★コード解説★
+@Transactionalで例外発生時に処理が失敗した時に
+insertをロールバックしている。
+⇒例外が出たときに、新規作成されない挙動になる
+
+createやupdateなどの処理は、@Transactionalを
+つけるようにする
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
