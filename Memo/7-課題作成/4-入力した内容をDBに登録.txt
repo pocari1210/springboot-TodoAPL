@@ -1,0 +1,88 @@
+
+4-入力した内容をDBに登録
+
+TaskForm formのオブジェクトを
+Controllerー⇒Service⇒Repositoryという順で、
+データを渡し、DBに入力した内容を登録する
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import com.example.todo.service.task.TaskEntity;
+
+import com.example.todo.service.task.TaskStatus;
+
+
+    @PostMapping("/tasks")
+    public String create(TaskForm form, Model model) {
+
+        var newEntity = new TaskEntity(null, form.summary(), form.description(),
+                TaskStatus.valueOf(form.status()));
+
+        // 新規作成するcreateメソッドを追加
+        taskService.create(newEntity);
+
+        return list(model);
+    }
+
+★コード解説★
+IDはauto incrementをしている関係で、値を指定できないため、
+nullを指定
+
+statusはENUMクラスを渡さないといけないので、
+valueofメソッドを使用し、statusに一致したenumクラスを取得できる
+⇒Formでselectを使用する際に用いられる
+
+ALT + ENTERを押し、Serviceクラス(Entityファイル)に
+createメソッドを追加する
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Entityの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskEntity.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public void create(TaskEntity newEntity) {
+        taskRepository.insert(newEntity);
+    }
+
+★コード解説★
+コントローラーから受け取った値をServiceに
+もってくる記述を行っている。
+
+RepositoryにnewEntityを渡す。
+⇒ALT + ENTERキーでRepositoryにinsertメソッドを追加する
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @Insert("""
+    INSERT INTO tasks (summary, description, status)
+    VALUES (#{task.summary}, #{task.description}, #{task.status})
+    """)
+    void insert(@Param("task") TaskEntity newEntity);
+
+★コード解説★
+テーブル名:tasksにデータを投入している。
+
+@Param("task")とし、VALUESで入力した内容を受け取る
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+新規作成ページのフォームを入力し、一覧ページに登録されていることを
+確認する。
