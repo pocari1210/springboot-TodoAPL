@@ -1,19 +1,20 @@
 package com.example.todo.controller.task;
 
-import com.example.todo.service.task.TaskEntity;
 import com.example.todo.service.task.TaskService;
-import com.example.todo.service.task.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 // コントローラーとして認識させる
 @Controller
 
 @RequiredArgsConstructor
+
+@RequestMapping("/tasks")
 
 public class TaskController {
 
@@ -27,7 +28,7 @@ public class TaskController {
 
     // データを取得する
     // メソッドとGETの処理を行うURLを紐づける役割を担う
-    @GetMapping("/tasks")
+    @GetMapping
     public String list(Model model) {
 
         var taskList = taskService.find()
@@ -45,7 +46,7 @@ public class TaskController {
         return "tasks/list";
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     public String showDetail(@PathVariable("id") long taskId, Model model) {
         var taskEntity = taskService.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Task not found: id = " + taskId));
@@ -53,18 +54,15 @@ public class TaskController {
         return "tasks/detail";
     }
 
-    @GetMapping("/tasks/creationForm")
+    @GetMapping("/creationForm")
     public String showCreationForm() {
         return "tasks/form";
     }
 
-    @PostMapping("/tasks")
+    @PostMapping
     public String create(TaskForm form) {
 
-        var newEntity = new TaskEntity(null, form.summary(), form.description(),
-                TaskStatus.valueOf(form.status()));
-
-        taskService.create(newEntity);
+        taskService.create(form.toEntity());
 
         return "redirect:/tasks";
     }

@@ -1,0 +1,79 @@
+
+7-リファクタリング(FormとURL)
+
+リファクタリング①
+
+TaskFormにインスタンスを作成(初期化)するコードを
+Formファイルに記述し、Controllerファイルの中身をすっきりさせる
+
+◆Formファイルの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import com.example.todo.service.task.TaskEntity;
+import com.example.todo.service.task.TaskStatus;
+
+) {
+    public TaskEntity toEntity() {
+        return new TaskEntity(null, summary(), description(), TaskStatus.valueOf(status()));
+    }
+}
+
+★コード解説★
+TaskEntityをTaskFormのインスタンスメソッドとして定義
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @PostMapping("/tasks")
+    public String create(TaskForm form) {
+
+        taskService.create(form.toEntity());
+
+        return "redirect:/tasks";
+    }
+
+★コード解説
+form.toEntity()とすることで、formの値を
+entityに変換してタスクサービスに渡す
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+リファクタリング②
+
+@RequestMappingを使用し、URLの遷移先の記述を
+リファクタリングする
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@RequestMapping("/tasks")
+
+// /tasksに遷移
+@GetMapping
+
+// /tasks/{id}に遷移
+@GetMapping("/{id}")
+
+// /tasks/creationFormに遷移
+@GetMapping("/creationForm")
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+操作を行い、エラーが出ていないことを確認する
+
