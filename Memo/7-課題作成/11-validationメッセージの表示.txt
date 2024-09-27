@@ -1,0 +1,63 @@
+
+11-validationメッセージの表示
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/form.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<span th:errors="*{summary}"></span>
+
+<span th:errors="*{description}"></span>
+
+<span th:errors="*{status}"></span>
+
+★コード解説★
+errors="*{}"
+⇒エラーメッセージを表示させたいときに使用する
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Formクラスの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import jakarta.validation.constraints.Size;
+
+public record TaskForm(
+        @Size(max = 256, message = "256文字以内で入力してください")
+        String summary,
+
+★コード解説★
+入力できる文字列の長さを指定している
+
+max
+⇒文字数の最大数を指定
+
+import jakarta.validation.constraints.Pattern;
+
+        @Pattern(regexp="TODO|DOING|DONE", message = "Todo, Doing, Done のいずれかを選択してください")
+        String status
+
+★コード解説★
+ステータスに入力できる文字列をバリデーションで制限している
+
+chromeの開発ツールで、新しい項目を追加し、選択をおこなったら、
+500エラーがでるので、不具合を解消している。
+
+@Pattern
+⇒正規表現を行っている
+
+regexp
+⇒入力できる条件を指定
+
+message
+⇒validationエラーが出た際のメッセージ
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
