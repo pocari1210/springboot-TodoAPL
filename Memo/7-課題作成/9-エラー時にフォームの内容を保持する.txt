@@ -1,0 +1,79 @@
+
+9-エラー時にフォームの内容を保持する
+
+必須項目でない箇所を入力した状態かつ、必須入力をNullにした状態で
+submitをした際、フォームの内容がすべてクリアされてしまうので、
+その不具合を解消する
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping("/creationForm")
+
+    // TaskFormとModelを受け取る
+    public String showCreationForm(TaskForm form, Model model) {
+
+        // formがNullだった場合の処理
+        // 初期値は全てnullとする
+        if (form == null) {
+            form = new TaskForm(null, null, null);
+        }
+
+        // 第一引数のtaskFormという名称で、
+        // 第二引数のformの値を渡す
+        model.addAttribute("taskForm", form);
+        return "tasks/form";
+    }
+
+    @PostMapping
+
+        public String create(@Validated TaskForm form, BindingResult bindingResult, Model model) {
+
+            // validationエラーの時は入力として受け取った
+            // formとmodelを渡す
+            if (bindingResult.hasErrors()) {
+                return showCreationForm(form, model);
+            }
+
+★コード解説★
+createメソッドが呼び出され、validationエラーが発生した時に
+フォームに向かって現在のデータを再度戻す必要がある。
+
+テンプレートではなく、メソッドを直接呼ぶ必要がある
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/form.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<form th:action="@{/tasks}" method="post" th:object="${taskForm}">
+       <input type="text" id="summaryInput" th:field="*{summary}">
+
+       <textarea id="descriptionInput" th:field="*{description}"></textarea>
+
+       <select id="statusInput" th:field="*{status}">
+
+★コード解説★
+コントローラーの記述で、thymeleaf側でtaskFormという
+データを参照できるようになった
+
+showCreationFormのaddAttribute("taskForm", form)のkeyで
+taskFormの値を参照できる
+
+th:fieldを使うと、*{summary}の値が入力要素に代入される
+⇒この記述で、name情報が不要になる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+必須項目でないところを入力し、送信ボタンを押した結果、
+内容がクリアされず記述内容が残っていたらOK
+
