@@ -1,0 +1,77 @@
+
+8-入力を必須にする(validation)
+
+空の状態で新規登録できてしまうので、必須項目を登録する
+
+◆gradleの編集◆
+
+ディレクトリ
+build.gradle
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Formの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import jakarta.validation.constraints.NotBlank;
+
+public record TaskForm(
+        @NotBlank
+        String summary,
+        String description,
+        @NotBlank
+        String status
+
+★コード解説★
+フィールドにアノテーションをつけることで
+validationの設定ができる
+
+@NotBlank
+空文字やNullの場合にエラーを出すことができる
+⇒必須入力にする(DBの定義が必須入力になる)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+com.example.todo.controller.task.TaskController
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+
+
+    @PostMapping
+
+        ↓↓追記↓↓
+        public String create(@Validated TaskForm form, BindingResult bindingResult) {
+            if (bindingResult.hasErrors()) {
+                return "tasks/form";
+            }
+
+★コード解説★
+BindingResultクラス
+validation結果を取得し、エラーが出た際に、
+処理を分岐する
+
+hasErrors()
+validationエラーが発生したかを確認できる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+新規登録を行い、recordが追加されていないことを確認
+
+
