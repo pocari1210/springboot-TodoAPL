@@ -1,0 +1,40 @@
+
+10-ModelAttributeアノテーション
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.web.bind.annotation.*;
+
+    @GetMapping("/creationForm")
+
+    // ModelAttributeでkey名を指定しない場合、
+    // TaskFormクラスがkey名に使われる
+    // ※先頭が小文字になり、taskFormというクラス名がkeyになる
+    public String showCreationForm(@ModelAttribute TaskForm form){
+        return "tasks/form";
+    }
+
+    @PostMapping
+
+        ↓↓Modelの削除↓↓
+        public String create(@Validated TaskForm form, BindingResult bindingResult) {
+            if (bindingResult.hasErrors()) {
+                return showCreationForm(form);
+
+★コード解説★
+@ModelAttributeをつかうことで、
+1:TaskFormがmodel.addAtributeしたときと同じ働きと機能になる。
+2:Formがnullの場合、自動で初期化を行ってくれる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+エラーが出ず、新規作成が行えることを確認
+
+
+
