@@ -1,0 +1,57 @@
+
+4-リファクタリング(EntityをFormに変換)
+
+◆Formの編集◆
+
+EntityをFormに変換し、リファクタリングする
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public static TaskForm fromEntity(TaskEntity taskEntity) {
+        return new TaskForm(
+                taskEntity.summary(),
+                taskEntity.description(),
+                taskEntity.status().name()
+        );
+    }
+
+★コード解説★
+fromEntityメソッドを生成
+戻り値はTaskFormとなる。
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    // 詳細画面
+    @GetMapping("/{id}")
+    public String showDetail(@PathVariable("id") long taskId, Model model) {
+
+        var taskDTO = taskService.findById(taskId)
+                .map(TaskDTO::toDTO)
+                .orElseThrow(TaskNotFoundException::new);
+
+        model.addAttribute("task", taskDTO);
+
+    // 編集画面
+    @GetMapping("/{id}/editForm")
+    public String showEditForm(@PathVariable("id") long id, Model model) {
+
+        var form = taskService.findById(id)
+                .map(TaskForm::fromEntity)
+                .orElseThrow(TaskNotFoundException::new);
+
+        model.addAttribute("taskForm", form);
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
