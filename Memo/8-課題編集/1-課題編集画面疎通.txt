@@ -1,0 +1,42 @@
+
+1-課題編集画面疎通
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/detail.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<section layout:fragment="content">
+
+    ↓↓遷移先のボタン設置↓↓
+    <div>
+        <a th:href="@{/tasks/{id}/editForm(id=${id})}" class="btn btn-primary">編集</a>
+    </div>
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping("/{id}/editForm")
+    public String showEditForm(@PathVariable("id") long id, Model model) {
+        var form = new TaskForm("hoge", "hogehoge", "TODO");
+        model.addAttribute("taskForm", form);
+        return "tasks/form";
+    }
+
+★コード解説★
+{id}と@PathVariable("id")が紐づいている
+
+addAttributeのtaskFormは
+form.htmlのth:object="${taskForm}"
+と紐づく
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
