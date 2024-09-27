@@ -1,0 +1,29 @@
+
+2-DBの登録内容を編集画面に表示
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping("/{id}/editForm")
+    public String showEditForm(@PathVariable("id") long id, Model model) {
+
+        var taskEntity = taskService.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+
+        var form = new TaskForm(taskEntity.summary(), taskEntity.description(), taskEntity.status().name());
+
+★コード解説★
+findByIdメソッド
+⇒指定されたIDに基づいてEntityを返す。
+
+orElseThrow
+⇒optionalの中のEntityが例外の場合、スローされる
+
+statusはString型にする必要があるので、enumのnameメソッドで
+文字列を取得している
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
