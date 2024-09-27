@@ -1,0 +1,61 @@
+
+3-存在しないIDを404ページで表示
+
+存在しないidで詳細画面や編集ページを検索した時に、
+404エラーページを表示するようにする
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    // 一覧画面
+    @GetMapping("/{id}")
+    public String showDetail(@PathVariable("id") long taskId, Model model) {
+        var taskEntity = taskService.findById(taskId)
+                .orElseThrow(TaskNotFoundException::new);
+
+    // 編集画面
+    @GetMapping("/{id}/editForm")
+    public String showEditForm(@PathVariable("id") long id, Model model) {
+
+        var taskEntity = taskService.findById(id)
+                .orElseThrow(TaskNotFoundException::new);
+
+★コード解説★
+TaskNotFoundExceptionという例外クラスを生成している
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆エラーページの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskNotFoundException.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.controller.task;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+
+public class TaskNotFoundException extends RuntimeException {
+}
+
+★コード解説★
+RuntimeException を継承することで、TaskNotFoundExceptionが
+例外クラスになる
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+⇒例外が発生した時に、NOT_FOUNDとする
+　これにより、404エラーページが表示される
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+存在しないIDを検索し、404エラーページが表示されることを確認
+
