@@ -29,7 +29,7 @@ public class TaskController {
     // データを取得する
     // メソッドとGETの処理を行うURLを紐づける役割を担う
     @GetMapping
-    public String list(Model model) {
+    public String list(TaskSearchForm searchForm,Model model) {
 
         var taskList = taskService.find()
 

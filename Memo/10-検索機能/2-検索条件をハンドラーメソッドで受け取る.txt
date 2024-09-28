@@ -1,0 +1,58 @@
+
+2-検索条件をハンドラーメソッドで受け取る
+
+ハンドラーメソッドは入力項目に設定された値を
+正しく受け取る必要がある。
+
+検索フォームを受け取るためのFormクラスを生成する
+
+◆Formの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskSearchForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.controller.task;
+
+import java.util.List;
+
+public record TaskSearchForm(
+        String summary,
+        List<String> status
+) {
+}
+
+★コード解説★
+statusは複数選択することができるので、
+文字列のListで受け取る必要がある。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping
+
+    ↓↓引数追加↓↓
+    public String list(TaskSearchForm searchForm,Model model) {
+
+        var taskList = taskService.find()
+
+★コード解説★
+デベロッパーツールのNetworkのHeadersのパラメーターを
+受け取る記述を行う。
+
+TaskSearchFormクラスを追加し、
+検索条件を取得する。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+var taskList = taskService.find()箇所を、デバッグモードにし、
+Formに入力された内容がLogに反映されたらOK
+
+
