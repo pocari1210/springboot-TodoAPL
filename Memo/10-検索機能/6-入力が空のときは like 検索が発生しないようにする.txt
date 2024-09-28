@@ -1,0 +1,38 @@
+
+6-入力が空のときは like 検索が発生しないようにする
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+public interface TaskRepository {
+
+    @Select("""
+            <script>
+              SELECT id, summary, description, status
+              FROM tasks
+              <where>
+
+                // 空文字、またはNullでない場合の処理
+　　　　　　　  // 空文字、またはNullの場合は、whereタグごと削除される
+                <if test='condition.summary != null and !condition.summary.isBlank()'>
+                  summary LIKE CONCAT('%', #{condition.summary}, '%')
+                </if>
+
+              </where>
+            </script>
+            """)
+
+★コード解説★
+mybatisのDynamic SQLという機能を使っている
+
+※注意事項※
+本番環境ではLIKEはほぼ採用されない(動作がかなり遅くなってしまう為)
+全文検索が採用されるケースが多い
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
