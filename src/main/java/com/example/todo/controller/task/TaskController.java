@@ -58,15 +58,16 @@ public class TaskController {
     }
 
     @GetMapping("/creationForm")
-    public String showCreationForm(@ModelAttribute TaskForm form){
+    public String showCreationForm(@ModelAttribute TaskForm form, Model model) {
+        model.addAttribute("mode", "CREATE");
         return "tasks/form";
     }
 
     @PostMapping
 
-        public String create(@Validated TaskForm form, BindingResult bindingResult) {
+        public String create(@Validated TaskForm form, BindingResult bindingResult, Model model) {
             if (bindingResult.hasErrors()) {
-                return showCreationForm(form);
+                return showCreationForm(form, model);
             }
 
         taskService.create(form.toEntity());
@@ -82,6 +83,7 @@ public class TaskController {
                 .orElseThrow(TaskNotFoundException::new);
 
         model.addAttribute("taskForm", form);
+        model.addAttribute("mode", "EDIT");
 
         return "tasks/form";
     }
