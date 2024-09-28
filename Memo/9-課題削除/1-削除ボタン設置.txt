@@ -1,0 +1,43 @@
+
+1-削除ボタン設置
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/detail.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<form th:action="@{/tasks/{id}(id=${id})}" th:method="delete" style="display: inline;">
+    <button type="submit" class="btn btn-danger">削除</button>
+</form>
+
+★コード解説★
+deleteを実装するときは、formタグを使用する。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.web.bind.annotation.*;
+// import org.springframework.web.bind.annotation.DeleteMapping;
+
+
+    @DeleteMapping("{id}")
+    public String delete(@PathVariable("id") long id) {
+        return "redirect:/tasks";
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+詳細画面に削除ボタンが表示され、
+削除ボタンを押し、一覧画面にリダイレクト(遷移)されることを確認
+
+
+
+
