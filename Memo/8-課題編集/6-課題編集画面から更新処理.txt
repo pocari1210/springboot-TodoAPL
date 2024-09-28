@@ -1,0 +1,73 @@
+
+6-課題編集画面から更新処理
+
+課題編集画面の編集ボタンを押したときに
+送信されたリクエストを受けるハンドラーメソッドを追加する
+
+◆ビューの編集(遷移元)◆
+
+ディレクトリ
+src/main/resources/application.properties
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+spring.mvc.hiddenmethod.filter.enabled=true
+
+
+★コード解説★
+・spring.mvc.hiddenmethod.filter.enabledプロパティ
+Spring MVCにおける HiddenHttpMethodFilter フィルタの有効化を制御する。
+
+このフィルタは、HTMLフォームで送信されるHTTPメソッドを、
+リクエストパラメータから取得して設定することで、
+ブラウザがサポートしていないHTTPメソッド（PUT、DELETEなど）を
+擬似的に実現する機能が提供される。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.springframework.web.bind.annotation.*;
+// import org.springframework.web.bind.annotation.PutMapping;
+
+    @PutMapping("{id}") // PUT /tasks/{id}
+    public String update(
+            @PathVariable("id") long id,
+            @Validated @ModelAttribute TaskForm form,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("mode", "EDIT");
+            return "tasks/form";
+        }
+        return "redirect:/tasks/{id}";
+    }
+
+★コード解説★
+update(@PathVariable("id") long id)
+⇒アップデート対処のIDを取得したいので、
+　@PathVariableのIDと指定してlong型のidを受け取る
+
+BindingResultクラス
+validation結果を取得し、エラーが出た際に、
+処理を分岐する
+
+hasErrors()
+validationエラーが発生したかを確認できる
+
+@ModelAttributeをつかうことで、
+1:TaskFormがmodel.addAtributeしたときと同じ働きと機能になる。
+2:Formがnullの場合、自動で初期化を行ってくれる
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+課題編集画面で編集ボタンを押し、課題詳細画面に
+遷移(redirect)されることを確認
+
+
