@@ -1,0 +1,55 @@
+
+5-概要の検索
+
+◆Serviceの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public List<TaskEntity> find(TaskSearchEntity searchEntity) {
+        return taskRepository.select(searchEntity);
+    }
+
+★コード解説★
+find(TaskSearchEntity searchEntity)
+⇒検索条件がコントローラーからわたってくる
+
+　この記述よりうけとる
+　taskService.find(searchForm.toEntity())
+
+taskRepository.select(searchEntity)
+⇒DBに渡していく流れになる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @Select("""
+            SELECT id, summary, description, status
+            FROM tasks
+            WHERE summary LIKE CONCAT('%', #{condition.summary}, '%')
+            """)
+    List<TaskEntity> select(@Param("condition") TaskSearchEntity condition);
+
+★コード解説★
+@Param("condition")
+⇒クエリ内でも参照できるようにする
+
+TaskSearchEntity condition
+⇒検索条件がわたってくるようにする記述
+
+CONCAT
+⇒文字列を連結させている
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+検索ができたらOK
+
