@@ -1,0 +1,64 @@
+
+2-DBからデータの削除
+
+◆Serviceの編集◆
+
+DELETEのハンドラーメソッド内でDBから指定されたtaskを
+削除する
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @Transactional
+    public void delete(long id) {
+        taskRepository.delete(id);
+    }
+
+★コード解説★
+deleteメソッドの引数でidを指定し、
+Repositoryから削除を行うメソッドを生成
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @DeleteMapping("{id}")
+    public String delete(@PathVariable("id") long id) {
+
+        ↓↓追加↓↓
+        taskService.delete(id);
+
+★コード解説★
+削除ボタンが押されたら、service/task/TaskService.javaで記載した
+deleteメソッドが実行される。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Repositoryの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import org.apache.ibatis.annotations.Delete;
+
+    @Delete("DELETE FROM tasks WHERE id = #{taskId}")
+    void delete(@Param("taskId") long id);
+
+★コード解説★
+SQL分で、tasksテーブルでWHEREで条件指定したidのレコードを
+削除する。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+削除ボタンを押して、データが削除されていることを確認
+
