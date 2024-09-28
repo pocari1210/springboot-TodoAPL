@@ -1,0 +1,53 @@
+
+4-リファクタリング(EntityをFormに変換)
+
+コントローラーに記述したEntityの記述をFormファイルに記述し、
+コントローラーの記述を簡素化する
+
+◆Formの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskSearchForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import com.example.todo.service.task.TaskSearchEntity;
+import com.example.todo.service.task.TaskStatus;
+
+import java.util.Optional;
+
+) {
+    public TaskSearchEntity toEntity() {
+        var statusEntityList = Optional.ofNullable(status())
+                .map(statusList -> statusList.stream().map(TaskStatus::valueOf).toList())
+                .orElse(List.of());
+
+        return new TaskSearchEntity(summary(), statusEntityList);
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskSearchForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping
+    public String list(TaskSearchForm searchForm,Model model) {
+
+        var taskList = taskService.find(searchForm.toEntity())
+
+★コード解説★
+TaskSearchFormファイルのtoEntity()を読み込んでいる
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+エラーがなく、検索を行いデベロッパーツールのHeadersで
+入力したパラメーターがあることを確認
+
+
