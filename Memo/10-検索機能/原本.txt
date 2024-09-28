@@ -1,0 +1,83 @@
+
+3-検索条件をServiceに渡す
+
+クライアントから受け取った検索条件を
+Service層に渡す。
+
+◆Entityの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskSearchEntity.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.service.task;
+
+import java.util.List;
+
+public record TaskSearchEntity(
+        String summary,
+        List<TaskStatus> status
+) {
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆Serviceの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/service/task/TaskService.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public List<TaskEntity> find(TaskSearchEntity searchEntity) {
+        return taskRepository.select();
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping
+    public String list(TaskSearchForm searchForm,Model model) {
+
+        var statusEntityList = Optional.ofNullable(searchForm.status())
+
+                // 入力内容がNullでない場合の処理
+                .map(statusList -> statusList.stream().map(TaskStatus::valueOf).toList())
+                .orElse(List.of());
+
+        var searchEntity = new TaskSearchEntity(searchForm.summary(), statusEntityList);
+        var taskList = taskService.find(searchEntity)
+
+★コード解説★
+Optionalを記述し、入力内容がnullでもエラーが出ないようにする
+
+Optional.ofNullableメソッド
+⇒Optionalオブジェクトが保持する値を返す。
+　保持する値がnullの場合はNoSuchElementExceptionが
+　スローされる。
+
+streamメソッド
+⇒コレクション(List,Set,Mapなど)に対して様々な処理を行うためのもの
+
+mapメソッド
+⇒mapはstreamの各要素に対して指定した操作を行った結果を返すメソッド
+　valueOfでTaskStatusをString型にしている
+
+toListメソッド
+⇒streamをList化する
+
+orElseメソッド
+⇒存在する場合は値を返し、それ以外の場合はotherを返す。
+
+List.ofメソッド
+⇒引数に与えられた配列や要素の不変のListを返すメソッド
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
