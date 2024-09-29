@@ -1,0 +1,34 @@
+
+7-ステータスの検索
+
+ステータスの検索を実装(optionの検索)
+
+
+◆ルートの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/repository/task/TaskRepository.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<where>
+
+  // condition.statusがnullではなく、かつ空ではないとき、
+  // where句を追加する
+  <if test='condition.status != null and !condition.status.isEmpty()'>
+     AND status IN (
+        <foreach item='item' index='index' collection='condition.status' separator=','>
+           #{item}
+        </foreach>
+       )
+  </if>    
+
+★コード解説★
+ condition.status(collection)から#{item}でstatusを一つずつ
+取得している。
+
+,(カンマ)で文字列を区切っている(separator)
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
