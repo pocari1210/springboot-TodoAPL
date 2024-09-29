@@ -1,0 +1,63 @@
+
+9-ステータス検索の入力値を検索後も保持
+
+optionを検索をした後に内容を保持する
+
+◆DTOの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskSearchDTO.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+import java.util.Optional;
+
+    public boolean isChecked(String status) {
+        return Optional.ofNullable(statusList)
+
+                // statusListがnullでない場合、
+                // 引数がstatusに含まれているかを確認する
+                .map(l -> l.contains(status))
+
+                // nullの場合はfalseが返される
+                .orElse(false);
+    }
+
+★コード解説★
+iテンプレート上でsChecked('TODO')とすることで、
+検索条件にのステータスにTODOが設定されているかというのを
+確認することができるメソッドを作成
+
+contains(status)
+⇒isCheckedメソッドに引数が含まれているかをチェックしている
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+   <div class="btn-group">
+      <input class="btn-check" type="checkbox" id="statusSearchTodo" name="status" value="TODO" 
+            th:checked="*{isChecked('TODO')}">
+      <label class="btn btn-outline-primary" for="statusSearchTodo">TODO</label>
+      <input class="btn-check" type="checkbox" id="statusSearchDoing" name="status" value="DOING" 
+            th:checked="*{isChecked('DOING')}">
+      <label class="btn btn-outline-primary" for="statusSearchDoing">DOING</label>
+      <input class="btn-check" type="checkbox" id="statusSearchDone" name="status" value="DONE" 
+            th:checked="*{isChecked('DONE')}">
+      <label class="btn btn-outline-primary" for="statusSearchDone">DONE</label>
+   </div>
+
+★コード解説★
+optionのチェックを保持した状態にするには、
+input要素にth:checkedをつける必要がある。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+statusで検索した後に、入力内容が保持されていることを確認
+
+
