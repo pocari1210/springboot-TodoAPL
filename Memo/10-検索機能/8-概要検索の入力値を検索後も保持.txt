@@ -1,0 +1,100 @@
+
+8-概要検索の入力値を検索後も保持
+
+概要に文字を入力し、検索ボタンを押した後に
+概要の入力欄の文字が削除されてしまうので、
+検索後も入力内容を保持する
+
+◆Formの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskSearchForm.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    public TaskSearchDTO toDTO() {
+        return new TaskSearchDTO(summary(), status());
+    }
+
+★コード解説★
+DTOに変換するためのコードを記述
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆DTOの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskSearchDTO.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+package com.example.todo.controller.task;
+
+import java.util.List;
+
+public record TaskSearchDTO(
+        String summary,
+        List<String> statusList
+) {
+}
+
+★コード解説★
+TaskSearchFormで記述したTaskSearchDTOを
+FormからDTOに置き換えている
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆コントローラーの編集◆
+
+ディレクトリ
+src/main/java/com/example/todo/controller/task/TaskController.java
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+    @GetMapping
+    public String list(TaskSearchForm searchForm,Model model) {
+
+   ↓↓追加↓↓
+   model.addAttribute("searchDTO", searchForm.toDTO());
+
+   return "tasks/list";
+
+★コード解説★
+searchDTOという変数名で、TaskSearchFormのtoDTOメソッドを
+読みこんでいる
+
+searchDTOという変数名で、テンプレート側で
+検索条件を参照することができる
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+◆テンプレートの編集◆
+
+ディレクトリ
+src/main/resources/templates/tasks/list.html
+
+・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・・
+
+<div class="card-body">
+   <form th:action="@{/tasks}" method="get" th:object="${searchDTO}">
+      <div class="form-group">
+         <label class="form-label" for="summarySearch">概要</label>
+         <input class="form-control" id="summarySearch" placeholder="概要" th:field="*{summary}">
+      </div>
+
+★コード解説★
+th:object="${searchDTO}"
+⇒task/TaskControllerで取得したsearchDTOをバインドさせ
+  テンプレートに表示させる
+
+th:field="*{summary}"
+⇒searchDTOで取得したsummaryフィールドが
+  inputの値にセットされる。
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+検索後に入力された値が保持されていることを確認
+
+

@@ -20,10 +20,10 @@
             検索
         </div>
         <div class="card-body">
-            <form th:action="@{/tasks}" method="get">
+            <form th:action="@{/tasks}" method="get" th:object="${searchDTO}">
                 <div class="form-group">
                     <label class="form-label" for="summarySearch">概要</label>
-                    <input class="form-control" id="summarySearch" name="summary" placeholder="概要">
+                    <input class="form-control" id="summarySearch" placeholder="概要" th:field="*{summary}">
                 </div>
 
                 <div class="form-group mt-3">
